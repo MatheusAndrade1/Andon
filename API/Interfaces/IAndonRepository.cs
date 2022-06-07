@@ -7,7 +7,7 @@ namespace API.Interfaces
     {
         void Update(AppAndon andon);
         void Add(AppAndon andon) ;
-        void Remove(AppAndon andon) ;
+        void RemoveAndon(AppAndon andon) ;
         Task<bool> SaveAllAsync();
         Task<IEnumerable<AndonDto>> GetAndonsAsync();
         Task<AndonDto> GetAndonAsync(int id);

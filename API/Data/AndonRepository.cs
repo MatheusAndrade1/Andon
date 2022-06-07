@@ -59,9 +59,9 @@ namespace API.Data
             return await _context.Andon.AnyAsync(x => x.type == type);
         }
 
-        public void Remove(AppAndon andon)
+        public void RemoveAndon(AppAndon andon)
         {
-            _context.Remove(andon);
+            _context.Andon.Remove(andon);
         }
     }
 }

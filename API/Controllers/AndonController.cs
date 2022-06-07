@@ -69,15 +69,15 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAndon(int id, AndonDto andonDto)
+        public async Task<ActionResult> DeleteAndon(int id)
         {
             var andon = await _andonRepository.GetAndonByIdAsync(id);
 
-            _mapper.Map(andonDto, andon);
+            if(andon == null) return NotFound();
 
-            _andonRepository.Remove(andon);
+            _andonRepository.RemoveAndon(andon);
 
-            if(await _andonRepository.SaveAllAsync()) return NoContent();
+            if(await _andonRepository.SaveAllAsync()) return Ok();
 
             return BadRequest("Failed to delete andon!");
         }
