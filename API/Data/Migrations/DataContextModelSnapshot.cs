@@ -46,6 +46,28 @@ namespace API.Data.Migrations
 
                     b.ToTable("Andon");
                 });
+
+            modelBuilder.Entity("API.Entities.AppNodeList", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("nodeType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("NodeList");
+                });
 #pragma warning restore 612, 618
         }
     }

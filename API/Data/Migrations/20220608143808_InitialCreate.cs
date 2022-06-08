@@ -23,6 +23,21 @@ namespace API.Data.Migrations
                     table.PrimaryKey("PK_Andon", x => x.id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "NodeList",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    path = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    nodeType = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NodeList", x => x.id);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Andon_type",
                 table: "Andon",
@@ -35,6 +50,9 @@ namespace API.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Andon");
+
+            migrationBuilder.DropTable(
+                name: "NodeList");
         }
     }
 }

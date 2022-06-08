@@ -10,6 +10,9 @@ namespace API.Helpers
         {
             CreateMap<AppAndon, AndonDto>();
             CreateMap<AndonUpdateDto, AppAndon>();
+            
+            CreateMap<AppNodeList, NodeListDto>();
+            CreateMap<NodeListRegisterDto, AppNodeList>();
         }
     } 
 }

@@ -10,5 +10,6 @@ namespace API.Data
         }
 
         public DbSet<AppAndon> Andon { get; set; }
+        public DbSet<AppNodeList> NodeList { get; set; }
     }
 }

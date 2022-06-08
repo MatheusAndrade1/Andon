@@ -11,6 +11,7 @@ namespace API.Extensions
         {
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddScoped<IAndonRepository, AndonRepository>();
+            services.AddScoped<INodeListRepository, NodeListRepository>();
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
