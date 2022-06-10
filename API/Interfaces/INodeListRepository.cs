@@ -6,11 +6,11 @@ namespace API.Interfaces
     public interface INodeListRepository
     {
         Task<NodeListDto> GetNodeAsync(int id);
-        Task<AppNodeList> GetNodeByIdAsync(int id);
+        Task<NodeList> GetNodeByIdAsync(int id);
         Task<bool> SaveAllAsync();
-        void AddNodeList(AppNodeList node);
-        void UpdateNodeList(AppNodeList node);
-        void RemoveNodeList(AppNodeList node);
+        void AddNodeList(NodeList node);
+        void UpdateNodeList(NodeList node);
+        void RemoveNodeList(NodeList node);
         Task<IEnumerable<NodeListDto>> GetNodeListsAsync();
     }
 }

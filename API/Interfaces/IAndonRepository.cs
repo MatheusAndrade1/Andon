@@ -5,13 +5,13 @@ namespace API.Interfaces
 {
     public interface IAndonRepository
     {
-        void Update(AppAndon andon);
-        void Add(AppAndon andon) ;
-        void RemoveAndon(AppAndon andon) ;
+        void Update(Andon andon);
+        void Add(Andon andon) ;
+        void RemoveAndon(Andon andon) ;
         Task<bool> SaveAllAsync();
         Task<IEnumerable<AndonDto>> GetAndonsAsync();
         Task<AndonDto> GetAndonAsync(int id);
-        Task<AppAndon> GetAndonByIdAsync(int id);
+        Task<Andon> GetAndonByIdAsync(int id);
         Task<bool> AndonExists(string type);
     }
 }

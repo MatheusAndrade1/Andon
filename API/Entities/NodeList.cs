@@ -1,6 +1,6 @@
 namespace API.Entities
 {
-    public class AppNodeList
+    public class NodeList
     {
         public int id { get; set; }
         public string path { get; set; }

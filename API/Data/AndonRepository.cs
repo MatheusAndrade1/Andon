@@ -32,7 +32,7 @@ namespace API.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void Add(AppAndon andon) // Testing
+        public void Add(Andon andon) // Testing
         {
             _context.Andon.Add(andon);
         }
@@ -44,12 +44,12 @@ namespace API.Data
                 .ToListAsync();
         }
 
-        public void Update(AppAndon andon)
+        public void Update(Andon andon)
         {
             _context.Entry(andon).State = EntityState.Modified;
         }
 
-        public async Task<AppAndon> GetAndonByIdAsync(int id)
+        public async Task<Andon> GetAndonByIdAsync(int id)
         {
             return await _context.Andon.FindAsync(id);
         }
@@ -59,7 +59,7 @@ namespace API.Data
             return await _context.Andon.AnyAsync(x => x.type == type);
         }
 
-        public void RemoveAndon(AppAndon andon)
+        public void RemoveAndon(Andon andon)
         {
             _context.Andon.Remove(andon);
         }

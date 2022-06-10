@@ -20,20 +20,20 @@ namespace API.Data
         }
         public void AddUser(AppUser user)
         {
-            _context.User.Add(user);
+            _context.Users.Add(user);
         }
 
         public async Task<UserRegisterDto> GetUserAsync(int id)
         {
-            return await _context.User
-                .Where(x => x.id == id)
+            return await _context.Users
+                .Where(x => x.Id == id)
                 .ProjectTo<UserRegisterDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)
         {
-            return await _context.User.FindAsync(id);
+            return await _context.Users.FindAsync(id);
         }
 
         public async Task<bool> SaveAllAsync()
@@ -43,17 +43,22 @@ namespace API.Data
 
         public async Task<AppUser> GetUserSinglePrDefaultAsync(UserRegisterDto registerDto)
         {
-            return await _context.User.SingleOrDefaultAsync(x => x.Username == registerDto.Username);
+            return await _context.Users.SingleOrDefaultAsync(x => x.UserName == registerDto.Username);
         }
 
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
-            var user = await _context.User
-                .Where(x => x.Username == username)
+            var user = await _context.Users
+                .Where(x => x.UserName == username)
                 .ProjectTo<AppUser>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
             
             return user;
+        }
+
+        public async Task<bool> UserExists(string username)
+        {
+            return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
     }
 }

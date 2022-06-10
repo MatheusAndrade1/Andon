@@ -36,11 +36,11 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AppAndon>> Register(AndonRegisterDto registerDto)
+        public async Task<ActionResult<Andon>> Register(AndonRegisterDto registerDto)
         {
             if (await _andonRepository.AndonExists(registerDto.type)) return BadRequest("Andon already exists!");
 
-            var andon = new AppAndon
+            var andon = new Andon
             {
                 type = registerDto.type,
                 warnCount = registerDto.warnCount,

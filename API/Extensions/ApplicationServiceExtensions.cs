@@ -1,11 +1,8 @@
-using System.Text;
 using API.Data;
 using API.Helpers;
 using API.Interfaces;
 using API.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace API.Extensions
 {
@@ -20,18 +17,6 @@ namespace API.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             
             services.AddScoped<ITokenService, TokenService>();
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"])),
-                        ValidateIssuer = false, //API server
-                        ValidateAudience = false, //front end client
-                    };
-                });
 
             services.AddScoped<ClientIpCheckActionFilter>(container =>
             {

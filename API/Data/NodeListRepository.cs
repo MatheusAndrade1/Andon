@@ -26,7 +26,7 @@ namespace API.Data
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<AppNodeList> GetNodeByIdAsync(int id)
+        public async Task<NodeList> GetNodeByIdAsync(int id)
         {
             return await _context.NodeList.FindAsync(id);
         }
@@ -36,7 +36,7 @@ namespace API.Data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void AddNodeList(AppNodeList node) // Testing
+        public void AddNodeList(NodeList node) // Testing
         {
             _context.NodeList.Add(node);
         }
@@ -48,12 +48,12 @@ namespace API.Data
                 .ToListAsync();
         }
 
-        public void UpdateNodeList(AppNodeList node)
+        public void UpdateNodeList(NodeList node)
         {
             _context.Entry(node).State = EntityState.Modified;
         }
 
-        public void RemoveNodeList(AppNodeList node)
+        public void RemoveNodeList(NodeList node)
         {
             _context.NodeList.Remove(node);
         }

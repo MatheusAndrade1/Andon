@@ -12,6 +12,7 @@ The NuGet extension is used to install the following packets:
 - AutoMapper.Extensions.Microsoft.DependencyInjection v11.0.0
 - System.IdentityModel.Tokens.Jwt v6.19.0
 - Microsoft.AspNetCore.Authentication.Jwt v6.0.5
+- Microsoft.AspNetCore.Identity.EntityFrameworkCore v6.0.5
 
 Besides those packets, it is necessary to install the dotnet-ef through the command line:
 ```

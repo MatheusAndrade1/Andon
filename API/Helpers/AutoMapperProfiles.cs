@@ -8,11 +8,11 @@ namespace API.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<AppAndon, AndonDto>();
-            CreateMap<AndonUpdateDto, AppAndon>();
+            CreateMap<Andon, AndonDto>();
+            CreateMap<AndonUpdateDto, Andon>();
             
-            CreateMap<AppNodeList, NodeListDto>();
-            CreateMap<NodeListRegisterDto, AppNodeList>();
+            CreateMap<NodeList, NodeListDto>();
+            CreateMap<NodeListRegisterDto, NodeList>();
 
             //CreateMap<AppUser, UserDto>();
             CreateMap<UserRegisterDto, AppUser>();

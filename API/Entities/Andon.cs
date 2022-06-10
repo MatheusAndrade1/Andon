@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Entities
 {
     [Index(nameof(type), IsUnique = true)]
-    public class AppAndon
+    public class Andon
     {
         public int id { get; set; }
         public string type { get; set; }

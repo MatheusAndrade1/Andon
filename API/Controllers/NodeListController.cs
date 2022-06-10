@@ -32,9 +32,9 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AppNodeList>> Register(NodeListRegisterDto registerDto)
+        public async Task<ActionResult<NodeList>> Register(NodeListRegisterDto registerDto)
         {
-            var node = new AppNodeList
+            var node = new NodeList
             {
                 path = registerDto.path,
                 name = registerDto.name,
@@ -60,6 +60,7 @@ namespace API.Controllers
             return BadRequest("Failed to update node list!");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNodeList(int id)
         {

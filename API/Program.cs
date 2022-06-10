@@ -1,12 +1,22 @@
 using System.Net;
+using API.Data;
+using API.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var host = CreateHostBuilder(args).Build();
+            using var scope = host.Services.CreateScope();
+            var services = scope.ServiceProvider;
+
+            var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
+            await SeedRoles.Seed(roleManager);
+
+            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
