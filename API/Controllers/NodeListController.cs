@@ -2,10 +2,12 @@ using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     public class NodeListController : BaseApiController
     {
         private readonly INodeListRepository _nodeListRepository;

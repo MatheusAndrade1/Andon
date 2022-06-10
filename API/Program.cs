@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace API
 {
@@ -18,9 +11,33 @@ namespace API
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureServices((context, services) =>
+                {
+                    HostConfig.CertPath = context.Configuration["CertPath"]; 
+                    HostConfig.CertPassword = context.Configuration["CertPassword"];
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    var host = Dns.GetHostEntry("webapi.io");
+
+                    webBuilder.ConfigureKestrel(opt =>
+                    {
+                        // opt.ListenAnyIP(5000);
+                        opt.Listen(host.AddressList[0], 5000);
+                        opt.Listen(host.AddressList[0], 5001, listOpt => {
+                            listOpt.UseHttps(HostConfig.CertPath, HostConfig.CertPassword); //Enforcing the use of our certificate
+                        });
+                    });
                     webBuilder.UseStartup<Startup>();
                 });
     }
+
+
+    // 
+    public static class HostConfig
+    {
+        public static string CertPath {get; set;}
+        public static string CertPassword {get; set;}
+    }
+
 }

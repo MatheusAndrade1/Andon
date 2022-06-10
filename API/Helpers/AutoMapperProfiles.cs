@@ -13,6 +13,9 @@ namespace API.Helpers
             
             CreateMap<AppNodeList, NodeListDto>();
             CreateMap<NodeListRegisterDto, AppNodeList>();
+
+            //CreateMap<AppUser, UserDto>();
+            CreateMap<UserRegisterDto, AppUser>();
         }
     } 
 }
