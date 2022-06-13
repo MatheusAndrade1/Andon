@@ -4,6 +4,7 @@ using API.DTOs;
 using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -39,6 +40,8 @@ namespace API.Controllers
 
         if (!result.Succeeded) return BadRequest(result.Errors);
 
+        var roleResult = await _userManager.AddToRolesAsync(user, new[] {"Operator"}); // By default, adds the user to the operator role
+
         return new UserDto
         {
             Username = user.UserName,
@@ -46,6 +49,8 @@ namespace API.Controllers
         };
     }
 
+    
+    [Authorize(Policy = "RequireAdminRole")]
     [HttpPost("registerAdmin")]
     public async Task<ActionResult<UserDto>> RegisterAdmin(UserRegisterDto registerDto)
     {
@@ -59,7 +64,7 @@ namespace API.Controllers
 
         if (!result.Succeeded) return BadRequest(result.Errors);
         
-        var roleResult = await _userManager.AddToRoleAsync(user, "Admin"); // Assigning the user to the admin role
+        var roleResult = await _userManager.AddToRolesAsync(user, new[] {"Admin", "Operator"}); // Assigning the user to the admin role
 
         if (!roleResult.Succeeded) return BadRequest(roleResult.Errors);
 

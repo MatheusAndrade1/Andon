@@ -25,6 +25,7 @@ namespace API.Controllers
             return _mapper.Map<NodeListDto>(node);
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NodeListDto>>> GetNodeLists()
         {
@@ -60,7 +61,6 @@ namespace API.Controllers
             return BadRequest("Failed to update node list!");
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNodeList(int id)
         {

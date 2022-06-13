@@ -14,7 +14,8 @@ namespace API
             var services = scope.ServiceProvider;
 
             var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
-            await SeedRoles.Seed(roleManager);
+            var userManager = services.GetRequiredService<UserManager<AppUser>>();
+            await SeedRoles.Seed(roleManager, userManager);
 
             host.Run();
         }
