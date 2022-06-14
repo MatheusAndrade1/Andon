@@ -15,6 +15,7 @@ namespace API.Data
 
         public DbSet<Andon> Andon { get; set; }
         public DbSet<NodeList> NodeList { get; set; }
+        public DbSet<RefreshToken> RefreshToken { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

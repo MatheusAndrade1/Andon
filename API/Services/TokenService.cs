@@ -1,6 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using API.Entities;
 using API.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -10,33 +9,20 @@ namespace API.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly SymmetricSecurityKey _key;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IConfiguration _config;
         public TokenService(IConfiguration config, UserManager<AppUser> userManager)
         {
-            _userManager = userManager;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            _config = config;
         }
 
-        public async Task<String> CreateToken(AppUser user)
+        //
+        public string CreateToken(AppUser user, string time, SigningCredentials creds = null, List<Claim> claims = null)
         {
-            var claims = new List<Claim> //Creating a new claim with the user username
-            {
-                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
-            };
-
-            var roles = await _userManager.GetRolesAsync(user);
-
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role))); // Selecting the role from a list of roles
-
-            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature); //Creates the credentials
-
             var tokenDescriptor = new SecurityTokenDescriptor // Describing the token
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddHours(4),
-                SigningCredentials = creds
+                Expires = DateTime.UtcNow.AddMinutes(float.Parse(_config[time])),
+                SigningCredentials = creds,
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -46,5 +32,11 @@ namespace API.Services
             return tokenHandler.WriteToken(token);
 
         }
+
+        //     public async Task<ActionResult> DeleteToken(int id)
+        //     {
+
+        //     }
+        // }
     }
 }

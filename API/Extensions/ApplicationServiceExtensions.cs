@@ -1,3 +1,4 @@
+using API.Authenticators;
 using API.Data;
 using API.Helpers;
 using API.Interfaces;
@@ -17,6 +18,10 @@ namespace API.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             
             services.AddScoped<ITokenService, TokenService>();
+            services.AddTransient<IAuthenticator, Authenticator>();
+            services.AddScoped<IAccessTokenService, AccessTokenService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
             services.AddScoped<ClientIpCheckActionFilter>(container =>
             {

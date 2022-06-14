@@ -27,6 +27,7 @@ namespace API.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"])),
                     ValidateIssuer = false, //API server
                     ValidateAudience = false, //front end client
+                    ClockSkew = TimeSpan.Zero, // The token expires exactly at the time set by JwtExpirationMinutes + TimeNow
                 };
             });
 
