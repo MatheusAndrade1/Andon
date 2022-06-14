@@ -9,9 +9,9 @@ namespace API.Interfaces
         void Add(Andon andon) ;
         void RemoveAndon(Andon andon) ;
         Task<bool> SaveAllAsync();
-        Task<IEnumerable<AndonDto>> GetAndonsAsync();
+        Task<List<AndonGetDto>> GetAndonsAsync();
         Task<AndonDto> GetAndonAsync(int id);
-        Task<Andon> GetAndonByIdAsync(int id);
         Task<bool> AndonExists(string type);
+        Task<Andon> GetAndonByEntityIdAsync(string entityId);
     }
 }

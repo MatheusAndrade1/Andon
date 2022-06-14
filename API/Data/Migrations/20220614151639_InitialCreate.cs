@@ -15,9 +15,12 @@ namespace API.Data.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    type = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    warnCount = table.Column<int>(type: "int", nullable: false),
-                    alarmCount = table.Column<int>(type: "int", nullable: false)
+                    entityId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    hierarchyDefinitionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    hierarchyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    parentEntityId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    path = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -201,11 +204,11 @@ namespace API.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Andon_type",
+                name: "IX_Andon_entityId",
                 table: "Andon",
-                column: "type",
+                column: "entityId",
                 unique: true,
-                filter: "[type] IS NOT NULL");
+                filter: "[entityId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

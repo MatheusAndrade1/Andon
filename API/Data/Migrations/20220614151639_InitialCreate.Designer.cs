@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220613194741_InitialCreate")]
+    [Migration("20220614151639_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,20 +32,29 @@ namespace API.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
-                    b.Property<int>("alarmCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("type")
+                    b.Property<string>("entityId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("warnCount")
-                        .HasColumnType("int");
+                    b.Property<string>("hierarchyDefinitionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("hierarchyId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("parentEntityId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("path")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
-                    b.HasIndex("type")
+                    b.HasIndex("entityId")
                         .IsUnique()
-                        .HasFilter("[type] IS NOT NULL");
+                        .HasFilter("[entityId] IS NOT NULL");
 
                     b.ToTable("Andon");
                 });
