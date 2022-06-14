@@ -20,7 +20,7 @@ namespace API.Services
             _config = config;
             _userManager = userManager;
             _tokenService = tokenService;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["AccessTokenKey"]));
         }
 
         public async Task<String> AccessToken(AppUser user)

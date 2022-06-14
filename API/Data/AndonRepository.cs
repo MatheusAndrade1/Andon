@@ -47,22 +47,8 @@ namespace API.Data
             // Gets the value of each andon and adds to the list
             foreach (var item in result)
             {
-                var andons = new AndonGetDto
-                {
-                    entityId = item.entityId,
-                    name = item.name,
-                    paths = new Dictionary<string,string>
-                    {
-                        {"hierarchyDefinitionId", item.hierarchyDefinitionId},
-                        {"hierarchyId", item.hierarchyId},
-                        {"parentEntityId", item.parentEntityId},
-                        {"path", item.path},
-                    }
-                };
-                
-                items.Add(andons);
+                items.Add(FormatAndon(item)); 
             }
-
             return items;
         }
 
@@ -75,6 +61,7 @@ namespace API.Data
         {
             return await _context.Andon
                 .Where(x => x.entityId == entityId)
+                // .ProjectTo<AndonDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
         }
 
@@ -86,6 +73,27 @@ namespace API.Data
         public void RemoveAndon(Andon andon)
         {
             _context.Andon.Remove(andon);
+        }
+
+        public AndonGetDto FormatAndon(AndonDto andonDto)
+        {
+            var andons = new AndonGetDto
+            {
+                entityId = andonDto.entityId,
+                name = andonDto.name,
+                paths = new Dictionary<string,string>[]
+                {
+                    new Dictionary<string, string> 
+                    {
+                        {"hierarchyDefinitionId", andonDto.hierarchyDefinitionId},
+                        {"hierarchyId", andonDto.hierarchyId},
+                        {"parentEntityId", andonDto.parentEntityId},
+                        {"path", andonDto.path},
+                    }
+                }
+            };
+
+            return andons;
         }
     }
 }

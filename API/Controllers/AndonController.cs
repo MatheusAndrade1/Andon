@@ -33,26 +33,17 @@ namespace API.Controllers
         {
             var andon = await _andonRepository.GetAndonByEntityIdAsync(entityId);
 
-            if (andon.parentEntityId != null)
-            {
-                var andonChild = await _andonRepository.GetAndonByEntityIdAsync(andon.parentEntityId);
-            }
-            // return _mapper.Map<AndonDto>(andon);
-
-            var result = new AndonGetDto
+            var andonDto = new AndonDto
             {
                 entityId = andon.entityId,
                 name = andon.name,
-                paths = new Dictionary<string,string>
-                {
-                    {"hierarchyDefinitionId", andon.hierarchyDefinitionId},
-                    {"hierarchyId", andon.hierarchyId},
-                    {"parentEntityId", andon.parentEntityId},
-                    {"path", andon.path},
-                }
+                hierarchyDefinitionId = andon.hierarchyDefinitionId,
+                hierarchyId = andon.hierarchyId,
+                parentEntityId = andon.parentEntityId,
+                path = andon.path
             };
 
-            return result;
+            return _andonRepository.FormatAndon(andonDto);
         }
 
         [HttpPost("register")]
@@ -79,11 +70,13 @@ namespace API.Controllers
         }
 
         [HttpPut("{entityId}")]
-        public async Task<ActionResult> UpdateAndon(string entityId, AndonUpdateDto andonUpdateDto)
+        public async Task<ActionResult> UpdateAndon(string entityId, AndonUpdateDto andonDto)
         {
             var andon = await _andonRepository.GetAndonByEntityIdAsync(entityId);
 
-            _mapper.Map(andonUpdateDto, andon);
+            if(andon == null) return NotFound();
+
+            _mapper.Map(andonDto, andon);
 
             _andonRepository.Update(andon);
 

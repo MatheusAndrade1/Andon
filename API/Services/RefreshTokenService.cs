@@ -19,7 +19,7 @@ namespace API.Services
             _tokenService = tokenService;
             _config = config;
             _userManager = userManager;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
+            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["RefreshTokenKey"]));
         }
 
         public string RefreshToken(AppUser user)

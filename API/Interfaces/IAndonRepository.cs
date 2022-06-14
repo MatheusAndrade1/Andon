@@ -13,5 +13,6 @@ namespace API.Interfaces
         Task<AndonDto> GetAndonAsync(int id);
         Task<bool> AndonExists(string type);
         Task<Andon> GetAndonByEntityIdAsync(string entityId);
+        AndonGetDto FormatAndon(AndonDto andonDto);
     }
 }

@@ -50,7 +50,7 @@ namespace API.Authenticators
         TokenValidationParameters validationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["RefreshTokenKey"])),
                     ValidateIssuer = false, //API server
                     ValidateAudience = false, //front end client
                     ClockSkew = TimeSpan.Zero, // The token expires exactly at the time set by JwtExpirationMinutes + TimeNow

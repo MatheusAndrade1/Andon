@@ -24,7 +24,7 @@ namespace API.Extensions
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["AccessTokenKey"])),
                     ValidateIssuer = false, //API server
                     ValidateAudience = false, //front end client
                     ClockSkew = TimeSpan.Zero, // The token expires exactly at the time set by JwtExpirationMinutes + TimeNow
