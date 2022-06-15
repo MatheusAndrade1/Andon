@@ -30,6 +30,8 @@ namespace API.Controllers
         {
             var NodeList = await _nodeListRepository.GetNodeListByEntityIdAsync(entityId);
 
+            if (NodeList == null) return NotFound();
+
             var NodeListDto = new NodeListDto
             {
                 entityId = NodeList.entityId,

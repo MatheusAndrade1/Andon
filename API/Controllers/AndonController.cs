@@ -32,6 +32,9 @@ namespace API.Controllers
         public async Task<ActionResult<AndonDto>> GetAndon(int id)
         {
             var andons = await _andonRepository.GetAndonByIdAsync(id);
+
+            if (andons == null) return NotFound();
+
             return _mapper.Map<AndonDto>(andons);
         }
 
@@ -59,6 +62,8 @@ namespace API.Controllers
         public async Task<ActionResult> UpdateAndon(int id, AndonUpdateDto andonUpdateDto)
         {
             var andon = await _andonRepository.GetAndonByIdAsync(id);
+
+            if (andon == null) return NotFound();
 
             _mapper.Map(andonUpdateDto, andon);
 
