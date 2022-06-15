@@ -30,29 +30,20 @@ namespace API.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
-                    b.Property<string>("entityId")
+                    b.Property<int>("alarmCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("type")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("hierarchyDefinitionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("hierarchyId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("parentEntityId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("path")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("warnCount")
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.HasIndex("entityId")
+                    b.HasIndex("type")
                         .IsUnique()
-                        .HasFilter("[entityId] IS NOT NULL");
+                        .HasFilter("[type] IS NOT NULL");
 
                     b.ToTable("Andon");
                 });
@@ -178,16 +169,29 @@ namespace API.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
+                    b.Property<string>("entityId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("hierarchyDefinitionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("hierarchyId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("nodeType")
+                    b.Property<string>("parentEntityId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("path")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("entityId")
+                        .IsUnique()
+                        .HasFilter("[entityId] IS NOT NULL");
 
                     b.ToTable("NodeList");
                 });

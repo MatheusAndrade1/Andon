@@ -28,37 +28,23 @@ namespace API.Controllers
 
         }
 
-        [HttpGet("{entityId}")]
-        public async Task<ActionResult<AndonGetDto>> GetAndon(string entityId)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AndonDto>> GetAndon(int id)
         {
-            var andon = await _andonRepository.GetAndonByEntityIdAsync(entityId);
-
-            var andonDto = new AndonDto
-            {
-                entityId = andon.entityId,
-                name = andon.name,
-                hierarchyDefinitionId = andon.hierarchyDefinitionId,
-                hierarchyId = andon.hierarchyId,
-                parentEntityId = andon.parentEntityId,
-                path = andon.path
-            };
-
-            return _andonRepository.FormatAndon(andonDto);
+            var andons = await _andonRepository.GetAndonByIdAsync(id);
+            return _mapper.Map<AndonDto>(andons);
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<Andon>> Register(AndonDto registerDto)
+        public async Task<ActionResult<Andon>> Register(AndonRegisterDto registerDto)
         {
-            if (await _andonRepository.AndonExists(registerDto.entityId)) return BadRequest("Andon already exists!");
+            if (await _andonRepository.AndonExists(registerDto.type)) return BadRequest("Andon already exists!");
 
             var andon = new Andon
             {
-                entityId = registerDto.entityId,
-                name = registerDto.name,
-                hierarchyDefinitionId = registerDto.hierarchyDefinitionId,
-                hierarchyId = registerDto.hierarchyId,
-                parentEntityId = registerDto.parentEntityId,
-                path = registerDto.path
+                type = registerDto.type,
+                warnCount = registerDto.warnCount,
+                alarmCount = registerDto.alarmCount
             };
 
             //_context.Andon.Add(andon); // Here we get the date
@@ -69,14 +55,12 @@ namespace API.Controllers
             return andon;
         }
 
-        [HttpPut("{entityId}")]
-        public async Task<ActionResult> UpdateAndon(string entityId, AndonUpdateDto andonDto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateAndon(int id, AndonUpdateDto andonUpdateDto)
         {
-            var andon = await _andonRepository.GetAndonByEntityIdAsync(entityId);
+            var andon = await _andonRepository.GetAndonByIdAsync(id);
 
-            if(andon == null) return NotFound();
-
-            _mapper.Map(andonDto, andon);
+            _mapper.Map(andonUpdateDto, andon);
 
             _andonRepository.Update(andon);
 
@@ -85,10 +69,10 @@ namespace API.Controllers
             return BadRequest("Failed to update andon!");
         }
 
-        [HttpDelete("{entityId}")]
-        public async Task<ActionResult> DeleteAndon(string entityId)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAndon(int id)
         {
-            var andon = await _andonRepository.GetAndonByEntityIdAsync(entityId);
+            var andon = await _andonRepository.GetAndonByIdAsync(id);
 
             if(andon == null) return NotFound();
 

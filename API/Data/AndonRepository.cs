@@ -20,6 +20,7 @@ namespace API.Data
 
         public async Task<AndonDto> GetAndonAsync(int id)
         {
+            // return await _context.Andon.FindAsync(id);
             return await _context.Andon
                 .Where(x => x.id == id)
                 .ProjectTo<AndonDto>(_mapper.ConfigurationProvider)
@@ -36,20 +37,11 @@ namespace API.Data
             _context.Andon.Add(andon);
         }
 
-         public async Task<List<AndonGetDto>> GetAndonsAsync()
+         public async Task<IEnumerable<AndonDto>> GetAndonsAsync()
         {
-            var result = await _context.Andon
+            return await _context.Andon
                 .ProjectTo<AndonDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
-
-            var items = new List<AndonGetDto>();
-
-            // Gets the value of each andon and adds to the list
-            foreach (var item in result)
-            {
-                items.Add(FormatAndon(item)); 
-            }
-            return items;
         }
 
         public void Update(Andon andon)
@@ -57,43 +49,19 @@ namespace API.Data
             _context.Entry(andon).State = EntityState.Modified;
         }
 
-        public async Task<Andon> GetAndonByEntityIdAsync(string entityId)
+        public async Task<Andon> GetAndonByIdAsync(int id)
         {
-            return await _context.Andon
-                .Where(x => x.entityId == entityId)
-                // .ProjectTo<AndonDto>(_mapper.ConfigurationProvider)
-                .SingleOrDefaultAsync();
+            return await _context.Andon.FindAsync(id);
         }
 
         public async Task<bool> AndonExists(string type)
         {
-            return await _context.Andon.AnyAsync(x => x.entityId == type);
+            return await _context.Andon.AnyAsync(x => x.type == type);
         }
 
         public void RemoveAndon(Andon andon)
         {
             _context.Andon.Remove(andon);
-        }
-
-        public AndonGetDto FormatAndon(AndonDto andonDto)
-        {
-            var andons = new AndonGetDto
-            {
-                entityId = andonDto.entityId,
-                name = andonDto.name,
-                paths = new Dictionary<string,string>[]
-                {
-                    new Dictionary<string, string> 
-                    {
-                        {"hierarchyDefinitionId", andonDto.hierarchyDefinitionId},
-                        {"hierarchyId", andonDto.hierarchyId},
-                        {"parentEntityId", andonDto.parentEntityId},
-                        {"path", andonDto.path},
-                    }
-                }
-            };
-
-            return andons;
         }
     }
 }

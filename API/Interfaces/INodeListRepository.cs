@@ -5,12 +5,14 @@ namespace API.Interfaces
 {
     public interface INodeListRepository
     {
-        Task<NodeListDto> GetNodeAsync(int id);
-        Task<NodeList> GetNodeByIdAsync(int id);
+        Task<NodeListDto> GetNodeListAsync(int id);
         Task<bool> SaveAllAsync();
-        void AddNodeList(NodeList node);
-        void UpdateNodeList(NodeList node);
-        void RemoveNodeList(NodeList node);
-        Task<IEnumerable<NodeListDto>> GetNodeListsAsync();
+        void Add(NodeList NodeList);
+         Task<List<NodeListGetDto>> GetNodeListsAsync();
+         void Update(NodeList NodeList);
+         Task<NodeList> GetNodeListByEntityIdAsync(string entityId);
+         Task<bool> NodeListExists(string type);
+         void RemoveNodeList(NodeList NodeList);
+         NodeListGetDto FormatNodeList(NodeListDto NodeListDto);
     }
 }

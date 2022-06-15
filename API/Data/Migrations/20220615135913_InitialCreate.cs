@@ -15,12 +15,9 @@ namespace API.Data.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    entityId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    hierarchyDefinitionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    hierarchyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    parentEntityId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    path = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    type = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    warnCount = table.Column<int>(type: "int", nullable: false),
+                    alarmCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,9 +71,12 @@ namespace API.Data.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    path = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    entityId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    nodeType = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    hierarchyDefinitionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    hierarchyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    parentEntityId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    path = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -204,11 +204,11 @@ namespace API.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Andon_entityId",
+                name: "IX_Andon_type",
                 table: "Andon",
-                column: "entityId",
+                column: "type",
                 unique: true,
-                filter: "[entityId] IS NOT NULL");
+                filter: "[type] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -248,6 +248,13 @@ namespace API.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NodeList_entityId",
+                table: "NodeList",
+                column: "entityId",
+                unique: true,
+                filter: "[entityId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

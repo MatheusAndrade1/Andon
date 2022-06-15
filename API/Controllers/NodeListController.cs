@@ -18,61 +18,80 @@ namespace API.Controllers
             _nodeListRepository = nodeListRepository;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<NodeListDto>> GetNode(int id)
-        {
-            var node = await _nodeListRepository.GetNodeByIdAsync(id);
-            return _mapper.Map<NodeListDto>(node);
-        }
-
-        [Authorize(Policy = "RequireAdminRole")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NodeListDto>>> GetNodeLists()
         {
             return Ok(await _nodeListRepository.GetNodeListsAsync());
+
+        }
+
+        [HttpGet("{entityId}")]
+        public async Task<ActionResult<NodeListGetDto>> GetNodeList(string entityId)
+        {
+            var NodeList = await _nodeListRepository.GetNodeListByEntityIdAsync(entityId);
+
+            var NodeListDto = new NodeListDto
+            {
+                entityId = NodeList.entityId,
+                name = NodeList.name,
+                hierarchyDefinitionId = NodeList.hierarchyDefinitionId,
+                hierarchyId = NodeList.hierarchyId,
+                parentEntityId = NodeList.parentEntityId,
+                path = NodeList.path
+            };
+
+            return _nodeListRepository.FormatNodeList(NodeListDto);
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<NodeList>> Register(NodeListRegisterDto registerDto)
+        public async Task<ActionResult<NodeList>> Register(NodeListDto registerDto)
         {
-            var node = new NodeList
+            if (await _nodeListRepository.NodeListExists(registerDto.entityId)) return BadRequest("NodeList already exists!");
+
+            var NodeList = new NodeList
             {
-                path = registerDto.path,
+                entityId = registerDto.entityId,
                 name = registerDto.name,
-                nodeType = registerDto.nodeType
+                hierarchyDefinitionId = registerDto.hierarchyDefinitionId,
+                hierarchyId = registerDto.hierarchyId,
+                parentEntityId = registerDto.parentEntityId,
+                path = registerDto.path
             };
-            _nodeListRepository.AddNodeList(node);
+
+            _nodeListRepository.Add(NodeList);
             await _nodeListRepository.SaveAllAsync();
 
-            return node;
+            return NodeList;
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateNodeList(int id, NodeListRegisterDto nodeListUpdateDto)
+        [HttpPut("{entityId}")]
+        public async Task<ActionResult> UpdateNodeList(string entityId, NodeListDto NodeListDto)
         {
-            var node = await _nodeListRepository.GetNodeByIdAsync(id);
+            var NodeList = await _nodeListRepository.GetNodeListByEntityIdAsync(entityId);
 
-            _mapper.Map(nodeListUpdateDto, node);
+            if(NodeList == null) return NotFound();
 
-            _nodeListRepository.UpdateNodeList(node);
+            _mapper.Map(NodeListDto, NodeList);
+
+            _nodeListRepository.Update(NodeList);
 
             if(await _nodeListRepository.SaveAllAsync()) return NoContent();
 
-            return BadRequest("Failed to update node list!");
+            return BadRequest("Failed to update NodeList!");
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteNodeList(int id)
+        [HttpDelete("{entityId}")]
+        public async Task<ActionResult> DeleteNodeList(string entityId)
         {
-            var node = await _nodeListRepository.GetNodeByIdAsync(id);
+            var NodeList = await _nodeListRepository.GetNodeListByEntityIdAsync(entityId);
 
-            if(node == null) return NotFound();
+            if(NodeList == null) return NotFound();
 
-            _nodeListRepository.RemoveNodeList(node);
+            _nodeListRepository.RemoveNodeList(NodeList);
 
             if(await _nodeListRepository.SaveAllAsync()) return Ok();
 
-            return BadRequest("Failed to delete node list!");
+            return BadRequest("Failed to delete NodeList!");
         }
     }
 }
