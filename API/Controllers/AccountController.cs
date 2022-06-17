@@ -58,7 +58,7 @@ namespace API.Controllers
         }
 
 
-        [Authorize(Policy = "RequireAdminRole")]
+        // [Authorize(Policy = "RequireAdminRole")]
         [HttpPost("registerAdmin")]
         public async Task<ActionResult<UserDto>> RegisterAdmin(UserRegisterDto registerDto)
         {
@@ -135,7 +135,6 @@ namespace API.Controllers
             });
         }
 
-        [Authorize]
         [HttpPost("logout")]
         public string Logout()
         {

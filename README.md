@@ -21,6 +21,16 @@ dotnet tool install --global dotnet-ef --version 6.0.3
 
 Other versions can be found on [NuGet](https://www.nuget.org/packages/dotnet-ef/).
 
+## Deploying the database
+To persist changes in entities or to add a new entity, delete the Migrations folder and run the following command:
+```
+dotnet ef migrations add InitialCreate -o Data/Migrations
+```
+To deploy the database, run the following command:
+```
+dotnet ef database update
+```
+
 ## Custom domain
 This API uses a custom domain (webapi.io) to use a certificate.
 

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize]
     public class AndonController : BaseApiController
     {
         private readonly IAndonRepository _andonRepository;

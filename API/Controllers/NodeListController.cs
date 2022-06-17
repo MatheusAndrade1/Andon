@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize]
     public class NodeListController : BaseApiController
     {
         private readonly INodeListRepository _nodeListRepository;
