@@ -81,6 +81,7 @@ namespace API.Data
             {
                 entityId = NodeListDto.entityId,
                 name = NodeListDto.name,
+                type = NodeListDto.type,
                 paths = new Dictionary<string,string>[]
                 {
                     new Dictionary<string, string> 

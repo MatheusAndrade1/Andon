@@ -35,6 +35,7 @@ namespace API.Controllers
             {
                 entityId = NodeList.entityId,
                 name = NodeList.name,
+                type = NodeList.type,
                 hierarchyDefinitionId = NodeList.hierarchyDefinitionId,
                 hierarchyId = NodeList.hierarchyId,
                 parentEntityId = NodeList.parentEntityId,
@@ -53,6 +54,7 @@ namespace API.Controllers
             {
                 entityId = registerDto.entityId,
                 name = registerDto.name,
+                type = registerDto.type,
                 hierarchyDefinitionId = registerDto.hierarchyDefinitionId,
                 hierarchyId = registerDto.hierarchyId,
                 parentEntityId = registerDto.parentEntityId,
