@@ -35,6 +35,7 @@ namespace API.Controllers
             {
                 entityId = NodeList.entityId,
                 name = NodeList.name,
+                type = NodeList.type,
                 hierarchyDefinitionId = NodeList.hierarchyDefinitionId,
                 hierarchyId = NodeList.hierarchyId,
                 parentEntityId = NodeList.parentEntityId,
@@ -42,6 +43,13 @@ namespace API.Controllers
             };
 
             return _nodeListRepository.FormatNodeList(NodeListDto);
+        }
+
+        [HttpGet("child/{entityId}")]
+        public async Task<ActionResult<IEnumerable<NodeListDto>>> GetParentChildLists(string entityId)
+        {
+            return Ok(await _nodeListRepository.GetNodeTreeListAsync(entityId));
+
         }
 
         [HttpPost("register")]
@@ -53,6 +61,7 @@ namespace API.Controllers
             {
                 entityId = registerDto.entityId,
                 name = registerDto.name,
+                type = registerDto.type,
                 hierarchyDefinitionId = registerDto.hierarchyDefinitionId,
                 hierarchyId = registerDto.hierarchyId,
                 parentEntityId = registerDto.parentEntityId,
@@ -62,7 +71,11 @@ namespace API.Controllers
             _nodeListRepository.Add(NodeList);
             await _nodeListRepository.SaveAllAsync();
 
+            // if (!_nodeListRepository.IsChild(NodeList.type)) return NodeList;
+
             return NodeList;
+
+            
         }
 
         [HttpPut("{entityId}")]

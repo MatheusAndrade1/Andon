@@ -3,6 +3,7 @@ using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -24,6 +25,40 @@ namespace API.Data
                 .Where(x => x.id == id)
                 .ProjectTo<NodeListDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
+        }
+
+        public async Task<List<NodeListGetDto>> GetNodeTreeListAsync(string entityId)
+        {
+            var paramEntityId = new SqlParameter("entityId", entityId);
+
+            var sqlQuery = "SELECT DISTINCT a.* FROM NodeList a " +
+                            "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId "  +
+                            "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId "  +
+                            "WHERE a.entityId = @entityId " +
+                            "UNION ALL " +
+                            "SELECT DISTINCT b.* FROM NodeList a " +
+                            "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId " +
+                            "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId " +
+                            "WHERE a.entityId = @entityId AND b.entityId IS NOT NULL " +
+                            "UNION ALL " +
+                            "SELECT DISTINCT c.* FROM NodeList a " +
+                            "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId " +
+                            "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId " +
+                            "WHERE a.entityId = @entityId AND c.entityId IS NOT NULL";
+
+            var result = await _context.NodeList
+                .FromSqlRaw(sqlQuery, paramEntityId)
+                .ProjectTo<NodeListDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            var items = new List<NodeListGetDto>();
+
+            // Gets the value of each NodeList and adds to the list
+            foreach (var item in result)
+            {
+                items.Add(FormatNodeList(item)); 
+            }
+            return items;
         }
 
         public async Task<bool> SaveAllAsync()
@@ -68,6 +103,13 @@ namespace API.Data
         public async Task<bool> NodeListExists(string type)
         {
             return await _context.NodeList.AnyAsync(x => x.entityId == type);
+        }
+
+        public bool IsChild(string type)
+        {
+            bool response = (type == "Area" || type == "Line") ? true : false;
+            
+            return response;
         }
 
         public void RemoveNodeList(NodeList NodeList)

@@ -3,6 +3,7 @@ using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -11,9 +12,11 @@ namespace API.Data
     {
         private DataContext _context;
         private readonly IMapper _mapper;
+        private readonly INodeListRepository _nodeListRepository;
 
-        public AndonRepository(DataContext context, IMapper mapper)
+        public AndonRepository(DataContext context, IMapper mapper, INodeListRepository nodeListRepository)
         {
+            _nodeListRepository = nodeListRepository;
             _mapper = mapper;
             _context = context;
         }
@@ -37,10 +40,35 @@ namespace API.Data
             _context.Andon.Add(andon);
         }
 
-         public async Task<IEnumerable<AndonDto>> GetAndonsAsync()
+        public async Task<IEnumerable<AndonDto>> GetAndonsAsync()
         {
             return await _context.Andon
                 .ProjectTo<AndonDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+        }
+
+        public async Task<List<Andon>> GetAndonsByEntityIdAsync(string entityId)
+        {
+            var paramEntityId = new SqlParameter("entityId", entityId);
+
+            var sqlQuery =  "SELECT * FROM ANDON WHERE entityId IN " +
+                            "(SELECT DISTINCT a.entityId FROM NodeList a " +
+                            "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId "  +
+                            "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId "  +
+                            "WHERE a.entityId = @entityId " +
+                            "UNION ALL " +
+                            "SELECT DISTINCT b.entityId FROM NodeList a " +
+                            "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId " +
+                            "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId " +
+                            "WHERE a.entityId = @entityId AND b.entityId IS NOT NULL " +
+                            "UNION ALL " +
+                            "SELECT DISTINCT c.entityId FROM NodeList a " +
+                            "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId " +
+                            "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId " +
+                            "WHERE a.entityId = @entityId AND c.entityId IS NOT NULL)";
+
+            return await _context.Andon
+                .FromSqlRaw(sqlQuery, paramEntityId)
                 .ToListAsync();
         }
 

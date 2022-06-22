@@ -14,5 +14,7 @@ namespace API.Interfaces
          Task<bool> NodeListExists(string type);
          void RemoveNodeList(NodeList NodeList);
          NodeListGetDto FormatNodeList(NodeListDto NodeListDto);
+         bool IsChild(string type);
+         Task<List<NodeListGetDto>> GetNodeTreeListAsync(string entityId);
     }
 }

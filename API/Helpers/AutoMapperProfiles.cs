@@ -14,12 +14,6 @@ namespace API.Helpers
             CreateMap<NodeList, NodeListDto>();
             CreateMap<NodeListRegisterDto, NodeList>();
             CreateMap<NodeListGetDto, NodeList>();
-
-            CreateMap<RefreshToken, RefreshTokenDto>();
-            CreateMap<RefreshToken, RefreshRequestDto>();
-
-            //CreateMap<AppUser, UserDto>();
-            CreateMap<UserRegisterDto, AppUser>();
         }
     } 
 }

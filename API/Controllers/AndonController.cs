@@ -20,11 +20,13 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AndonDto>>> GetAndons()
         {
-            //var andons = await _andonRepository.GetAndonsAsync();
-            //var andonsToReturn = _mapper.Map<IEnumerable<AndonDto>>(andons);
-            //return Ok(andonsToReturn);
             return Ok(await _andonRepository.GetAndonsAsync());
+        }
 
+        [HttpGet("node/{entityId}")]
+        public async Task<ActionResult<IEnumerable<AndonDto>>> GetAndonsByEntityId(string entityId)
+        {
+            return Ok(await _andonRepository.GetAndonsByEntityIdAsync(entityId));
         }
 
         [HttpGet("{id}")]
@@ -46,7 +48,8 @@ namespace API.Controllers
             {
                 type = registerDto.type,
                 warnCount = registerDto.warnCount,
-                alarmCount = registerDto.alarmCount
+                alarmCount = registerDto.alarmCount,
+                entityId = registerDto.entityId
             };
 
             //_context.Andon.Add(andon); // Here we get the date

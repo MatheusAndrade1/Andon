@@ -13,10 +13,6 @@ namespace API
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
 
-            var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
-            var userManager = services.GetRequiredService<UserManager<AppUser>>();
-            await SeedRoles.Seed(roleManager, userManager);
-
             host.Run();
         }
 
