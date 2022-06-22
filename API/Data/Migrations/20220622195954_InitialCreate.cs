@@ -32,7 +32,6 @@ namespace API.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     entityId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     hierarchyDefinitionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     hierarchyId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     parentEntityId = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -41,20 +40,6 @@ namespace API.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NodeList", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "NodeList_Relationship",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    parentEntityId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    childEntityId = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_NodeList_Relationship", x => x.id);
                 });
 
             migrationBuilder.CreateIndex(
@@ -79,9 +64,6 @@ namespace API.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "NodeList");
-
-            migrationBuilder.DropTable(
-                name: "NodeList_Relationship");
         }
     }
 }

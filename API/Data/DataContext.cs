@@ -14,6 +14,5 @@ namespace API.Data
 
         public DbSet<Andon> Andon { get; set; }
         public DbSet<NodeList> NodeList { get; set; }
-        public DbSet<NodeList_Relationship> NodeList_Relationship { get; set; }
     }
 }

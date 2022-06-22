@@ -4,7 +4,6 @@ namespace API.DTOs
     {
         public string entityId { get; set; }
         public string name { get; set; }
-        public string type { get; set; }
         public Dictionary<string, string>[] paths { get; set; }
     }
 }

@@ -76,9 +76,6 @@ namespace API.Data.Migrations
                     b.Property<string>("path")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("type")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("id");
 
                     b.HasIndex("entityId")
@@ -86,25 +83,6 @@ namespace API.Data.Migrations
                         .HasFilter("[entityId] IS NOT NULL");
 
                     b.ToTable("NodeList");
-                });
-
-            modelBuilder.Entity("API.Entities.NodeList_Relationship", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
-
-                    b.Property<string>("childEntityId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("parentEntityId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("NodeList_Relationship");
                 });
 #pragma warning restore 612, 618
         }
