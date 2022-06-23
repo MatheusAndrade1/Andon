@@ -41,14 +41,14 @@ xxx.xxx.xxx.xxx webapi.io
 
 Where xxx.xxx.xxx.xxx is the server IP.
 
-## Trusting the certificate
+### Trusting the certificate
 In order to be trusted, the certificate needs to be imported to the "Manage User Certificates" Windows tool.
 
 So, inside the tool, select the "Trusted Root Certification Authorities" option, and in the "Certificates" folder click with the right mouse button and then "All Taks -> Import...".
 
 Then Select the "webapi.pfx" file and enter the private key "!Pa55W0rd!".
 
-## Using the certificate private key
+### Using the certificate private key
 This API uses the dotnet user-secrets to handle the private key. This mesure is adopted to not expose the private key in the source code. To set the password, issue the following command:
 ```
 dotnet user-secrets set "CertPassword" "!Pa55W0rd!"
