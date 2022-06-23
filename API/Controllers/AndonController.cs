@@ -52,8 +52,6 @@ namespace API.Controllers
                 entityId = registerDto.entityId
             };
 
-            //_context.Andon.Add(andon); // Here we get the date
-            //await _context.SaveChangesAsync(); // Here we actually apply the changes to the database
             _andonRepository.Add(andon);
             await _andonRepository.SaveAllAsync();
 

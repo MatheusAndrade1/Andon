@@ -23,7 +23,6 @@ namespace API.Data
 
         public async Task<AndonDto> GetAndonAsync(int id)
         {
-            // return await _context.Andon.FindAsync(id);
             return await _context.Andon
                 .Where(x => x.id == id)
                 .ProjectTo<AndonDto>(_mapper.ConfigurationProvider)
