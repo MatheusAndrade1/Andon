@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220622195954_InitialCreate")]
+    [Migration("20220623114833_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,16 +38,12 @@ namespace API.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("type")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("warnCount")
                         .HasColumnType("int");
 
                     b.HasKey("id");
-
-                    b.HasIndex("type")
-                        .IsUnique()
-                        .HasFilter("[type] IS NOT NULL");
 
                     b.ToTable("Andon");
                 });

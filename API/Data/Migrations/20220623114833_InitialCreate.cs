@@ -14,7 +14,7 @@ namespace API.Data.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    type = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     warnCount = table.Column<int>(type: "int", nullable: false),
                     alarmCount = table.Column<int>(type: "int", nullable: false),
                     entityId = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -41,13 +41,6 @@ namespace API.Data.Migrations
                 {
                     table.PrimaryKey("PK_NodeList", x => x.id);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Andon_type",
-                table: "Andon",
-                column: "type",
-                unique: true,
-                filter: "[type] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NodeList_entityId",

@@ -47,11 +47,11 @@ namespace API.Data
                 .ToListAsync();
         }
 
-        public async Task<List<Andon>> GetAndonsByEntityIdAsync(string entityId)
+        public async Task<List<AndonGroupedDto>> GetAndonsByEntityIdAsync(string entityId)
         {
             var paramEntityId = new SqlParameter("entityId", entityId);
 
-            var sqlQuery =  "SELECT * FROM ANDON WHERE entityId IN " +
+            var sqlQuery =  "SELECT type, SUM(warnCount) AS warnCount,SUM(alarmCount) AS alarmCount FROM ANDON WHERE entityId IN " +
                             "(SELECT DISTINCT a.entityId FROM NodeList a " +
                             "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId "  +
                             "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId "  +
@@ -65,10 +65,12 @@ namespace API.Data
                             "SELECT DISTINCT c.entityId FROM NodeList a " +
                             "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId " +
                             "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId " +
-                            "WHERE a.entityId = @entityId AND c.entityId IS NOT NULL)";
+                            "WHERE a.entityId = @entityId AND c.entityId IS NOT NULL) " +
+                            "GROUP BY type";
 
             return await _context.Andon
                 .FromSqlRaw(sqlQuery, paramEntityId)
+                .ProjectTo<AndonGroupedDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 

@@ -9,7 +9,8 @@ namespace API.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<Andon, AndonDto>();
-            CreateMap<AndonUpdateDto, Andon>();
+            CreateMap<AndonRegisterDto, Andon>();
+            CreateMap<Andon, AndonGroupedDto>();
             
             CreateMap<NodeList, NodeListDto>();
             CreateMap<NodeListRegisterDto, NodeList>();

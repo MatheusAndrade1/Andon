@@ -36,16 +36,12 @@ namespace API.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("type")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("warnCount")
                         .HasColumnType("int");
 
                     b.HasKey("id");
-
-                    b.HasIndex("type")
-                        .IsUnique()
-                        .HasFilter("[type] IS NOT NULL");
 
                     b.ToTable("Andon");
                 });

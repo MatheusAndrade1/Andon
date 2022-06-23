@@ -24,7 +24,7 @@ namespace API.Controllers
         }
 
         [HttpGet("node/{entityId}")]
-        public async Task<ActionResult<IEnumerable<AndonDto>>> GetAndonsByEntityId(string entityId)
+        public async Task<ActionResult<List<AndonDto>>> GetAndonsByEntityId(string entityId)
         {
             return Ok(await _andonRepository.GetAndonsByEntityIdAsync(entityId));
         }
@@ -61,7 +61,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateAndon(int id, AndonUpdateDto andonUpdateDto)
+        public async Task<ActionResult> UpdateAndon(int id, AndonRegisterDto andonUpdateDto)
         {
             var andon = await _andonRepository.GetAndonByIdAsync(id);
 
