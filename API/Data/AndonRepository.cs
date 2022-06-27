@@ -3,7 +3,6 @@ using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using LinqToDB.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +19,6 @@ namespace API.Data
             _nodeListRepository = nodeListRepository;
             _mapper = mapper;
             _context = context;
-            LinqToDBForEFTools.Initialize();
         }
 
         public async Task<AndonDto> GetAndonAsync(int id)
