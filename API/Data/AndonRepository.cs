@@ -3,6 +3,7 @@ using API.Entities;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using LinqToDB.EntityFrameworkCore;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,7 @@ namespace API.Data
             _nodeListRepository = nodeListRepository;
             _mapper = mapper;
             _context = context;
+            LinqToDBForEFTools.Initialize();
         }
 
         public async Task<AndonDto> GetAndonAsync(int id)
@@ -50,22 +52,8 @@ namespace API.Data
         {
             var paramEntityId = new SqlParameter("entityId", entityId);
 
-            var sqlQuery =  "SELECT type, SUM(warnCount) AS warnCount,SUM(alarmCount) AS alarmCount FROM ANDON WHERE entityId IN " +
-                            "(SELECT DISTINCT a.entityId FROM NodeList a " +
-                            "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId "  +
-                            "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId "  +
-                            "WHERE a.entityId = @entityId " +
-                            "UNION ALL " +
-                            "SELECT DISTINCT b.entityId FROM NodeList a " +
-                            "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId " +
-                            "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId " +
-                            "WHERE a.entityId = @entityId AND b.entityId IS NOT NULL " +
-                            "UNION ALL " +
-                            "SELECT DISTINCT c.entityId FROM NodeList a " +
-                            "LEFT JOIN NodeList b ON a.entityId = b.parentEntityId " +
-                            "LEFT JOIN NodeList c ON b.entityId = c.parentEntityId " +
-                            "WHERE a.entityId = @entityId AND c.entityId IS NOT NULL) " +
-                            "GROUP BY type";
+            // calls a function that returns all childs from the given entityId
+            var sqlQuery = "SELECT * FROM GetChildFunc(@entityId)";
 
             return await _context.Andon
                 .FromSqlRaw(sqlQuery, paramEntityId)
