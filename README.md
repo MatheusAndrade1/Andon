@@ -21,7 +21,7 @@ dotnet tool install --global dotnet-ef --version 6.0.3
 
 Other versions can be found on [NuGet](https://www.nuget.org/packages/dotnet-ef/).
 
-## Deploying the database ##
+## Deploying the database ## 
 To persist changes in entities or to add a new entity, delete the Migrations folder and run the following command:
 ```
 dotnet ef migrations add InitialCreate -o Data/Migrations
